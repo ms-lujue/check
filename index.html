@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <title>实习证明信息核对（身份证后6位）</title>
+  <style>
+    body { font-family: "Microsoft YaHei", sans-serif; margin: 40px; }
+    label, input, button { font-size: 16px; }
+    #result { margin-top: 20px; }
+    #proof-img { max-width: 100%; border: 1px solid #ccc; display: none; }
+    #msg { color: red; margin-top: 10px; }
+    .tip { margin-top: 10px; color: red; }
+  </style>
+</head>
+<body>
+  <h2>实习证明信息核对</h2>
+  <p class="tip">
+    请仔细核对姓名、性别、身份证号、学号、实习单位和实习时间。
+  </p>
+  <p>
+    <label for="id6">请输入本人身份证号后6位：</label>
+    <input type="text" id="id6" maxlength="6">
+    <button onclick="showProof()">查询</button>
+  </p>
+  <div id="msg"></div>
+  <div id="result">
+    <img id="proof-img" src="" alt="实习证明信息图片">
+  </div>
+
+  <script>
+    function showProof() {
+      var id6 = document.getElementById('id6').value.trim();
+      var img = document.getElementById('proof-img');
+      var msg = document.getElementById('msg');
+
+      if (!id6) {
+        msg.textContent = "请先输入身份证后6位";
+        img.style.display = 'none';
+        return;
+      }
+
+      if (id6.length !== 6) {
+        msg.textContent = "请输入准确的6位字符";
+        img.style.display = 'none';
+        return;
+      }
+
+      // 对应 img/身份证后6位.jpg 的实习证明图片
+      var url = 'img/' + id6 + '.jpg';
+
+      img.onload = function() {
+        msg.textContent = "";
+        img.style.display = 'block';
+      };
+      img.onerror = function() {
+        img.style.display = 'none';
+        msg.textContent = "未找到该身份证后6位对应的实习证明信息，请检查输入是否正确或联系老师。";
+      };
+
+      img.src = url + "?t=" + Date.now(); // 防缓存
+    }
+  </script>
+</body>
+</html>
